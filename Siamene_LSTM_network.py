@@ -103,8 +103,8 @@ class SiameneLSTM:
 
         model.fit([train_data_x1, train_data_x2, feat_train, leaks_train], train_scores,
                validation_data=([val_data_x1, val_data_x2, feat_val, leaks_val], val_scores),
-              epochs=25, batch_size=128, shuffle=True,
-          callbacks=[model_checkpoint, tensorboard])
+              epochs=25, batch_size=128, shuffle=True)
+        #   callbacks=[model_checkpoint, tensorboard])
          
         preds = list(model.predict([train_data_x1, train_data_x2, feat_train, leaks_train], verbose=1).ravel()) #Only for cross check purposes,
                                                                                                                 #not used for actual testing
