@@ -9,7 +9,7 @@ from math import sqrt
 import pandas as pd
 import numpy as np
 #train model...
-input_dataset = '/home/mvanessa/pastprojects/pastprojects/Final Code and Data/Augmented_Feat.csv'
+input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
 # input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
 
 df = NLP.cleaning_dataset(input_dataset)
