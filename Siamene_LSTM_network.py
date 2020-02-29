@@ -3,7 +3,7 @@ import pre_processing
 import pandas as pd
 import tensorflow as tf
 import keras
-from tensorflow.keras.layers import Dense, Input, LSTM, Dropout, Bidirectional, Dot, GRU, Conv1D, MaxPooling1D, Flatten, BatchNormalization, Embedding, concatenate, dot, subtract
+from tensorflow.keras.layers import Dense, Input, LSTM, Dropout, Bidirectional, Dot, GRU, Conv1D, MaxPooling1D, Flatten, BatchNormalization, Embedding, Subtract, concatenate, dot, subtract
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras import backend
 from tensorflow.keras.models import load_model,Model
@@ -54,7 +54,7 @@ class SiameneLSTM:
         # Setting LSTM Encoder layer for First Sentence
         sequence_1_input = Input(shape=(self.max_sequence_length,), dtype='int32') # Input 2
         embedded_sequences_1 = embedding_layer(sequence_1_input)
-        x1 = tensorflow.keras.layers.Subtract()([embedded_sequences_1, embedded_sequences_2]) #dist = v1 - v2
+        x1 = Subtract()([embedded_sequences_1, embedded_sequences_2]) #dist = v1 - v2
         x1 = lstm_layer1(x1)
         x1 = Dense(50, activation='sigmoid')(x1)
         
