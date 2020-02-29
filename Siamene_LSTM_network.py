@@ -9,7 +9,7 @@ from keras.layers.embeddings import Embedding
 from keras.layers.merge import concatenate, dot, subtract
 from keras.optimizers import Adam
 from keras import backend
-from keras.models import load_model,Model
+from tensorflow.keras.models import load_model,Model
 from tensorflow.keras.callbacks import TensorBoard,EarlyStopping, ModelCheckpoint
 import time,os
 
