@@ -10,7 +10,7 @@ from keras.layers.merge import concatenate, dot, subtract
 from keras.optimizers import Adam
 from keras import backend
 from keras.models import load_model,Model
-from tensorflow.keras.callbacks import TensorBoard,EarlyStopping, ModelCheckpoint
+from keras.callbacks import TensorBoard,EarlyStopping, ModelCheckpoint
 import time,os
 
 class SiameneLSTM:
@@ -103,7 +103,7 @@ class SiameneLSTM:
 
         model.fit([train_data_x1, train_data_x2, feat_train, leaks_train], train_scores,
                validation_data=([val_data_x1, val_data_x2, feat_val, leaks_val], val_scores),
-              epochs=1000, batch_size=64, shuffle=True,
+              epochs=25, batch_size=64, shuffle=True,
           callbacks=[model_checkpoint, tensorboard])
          
         preds = list(model.predict([train_data_x1, train_data_x2, feat_train, leaks_train], verbose=1).ravel()) #Only for cross check purposes,
