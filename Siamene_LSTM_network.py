@@ -3,10 +3,13 @@ import pre_processing
 import pandas as pd
 import tensorflow as tf
 import keras
-from tensorflow.keras.layers import Dense, Input, LSTM, Dropout, Bidirectional, Dot, GRU, Conv1D, MaxPooling1D, Flatten, BatchNormalization, Embedding, Subtract, concatenate, dot, subtract
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras import backend
-from tensorflow.keras.models import load_model,Model
+from keras.layers import Dense, Input, LSTM, Dropout, Bidirectional, Dot, GRU, Conv1D, MaxPooling1D, Flatten, Subtract
+from keras.layers.normalization import BatchNormalization
+from keras.layers.embeddings import Embedding
+from keras.layers.merge import concatenate, dot, subtract
+from keras.optimizers import Adam
+from keras import backend
+from keras.models import load_model,Model
 from tensorflow.keras.callbacks import TensorBoard,EarlyStopping, ModelCheckpoint
 import time,os
 
