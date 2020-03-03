@@ -9,8 +9,8 @@ from math import sqrt
 import pandas as pd
 import numpy as np
 #train model...
-# input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
-input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
+input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
+# input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
 
 df = NLP.cleaning_dataset(input_dataset)
 df = df.iloc[:2500, :]
@@ -70,7 +70,7 @@ df['ans_grade'] = y_train
 df_test = X_test
 df_test['ans_grade'] = y_test
 
-#Train the model
+# Train the model
 test, train_model, tokenizer = model.train_dataset_model(df)
 
 #Obtain test results by training on the test dataset dataframe

@@ -1,7 +1,6 @@
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 import pandas as pd
-# import Siamene_LSTM_network
-import Siamene_LSTM_network_c
+import Siamene_LSTM_network
 import pre_processing
 from operator import itemgetter
 
@@ -36,8 +35,7 @@ def train_dataset_model(df):
     print("----------created word embedding meta data-----------")
     
     #SiameneBiLSTM is a class for  Long short Term Memory networks
-    # siamese = Siamene_LSTM_network.SiameneLSTM(EMBEDDING_DIM ,MAX_SEQUENCE_LENGTH, NUMBER_LSTM, NUMBER_DENSE_UNITS, RATE_DROP_LSTM, RATE_DROP_DENSE, ACTIVATION_FUNCTION, VALIDATION_SPLIT)
-    siamese = Siamene_LSTM_network.SiameneLSTM_classify(EMBEDDING_DIM ,MAX_SEQUENCE_LENGTH, NUMBER_LSTM, NUMBER_DENSE_UNITS, RATE_DROP_LSTM, RATE_DROP_DENSE, ACTIVATION_FUNCTION, VALIDATION_SPLIT)
+    siamese = Siamene_LSTM_network.SiameneLSTM(EMBEDDING_DIM ,MAX_SEQUENCE_LENGTH, NUMBER_LSTM, NUMBER_DENSE_UNITS, RATE_DROP_LSTM, RATE_DROP_DENSE, ACTIVATION_FUNCTION, VALIDATION_SPLIT)
     preds, model_path = siamese.train_model(answers_pair, feat, scores, embedding_meta_data, model_save_directory='./')
     #preds, model_path = siamese.train_model(answers_pair, scores, embedding_meta_data, model_save_directory='./')
     

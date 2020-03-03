@@ -3,14 +3,17 @@ import pre_processing
 import pandas as pd
 import tensorflow as tf
 import keras
-from tensorflow.keras.layers import Dense, Input, LSTM, Dropout, Bidirectional, Dot, GRU, Conv1D, MaxPooling1D, Flatten, BatchNormalization, Embedding, Subtract, concatenate, dot, subtract
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras import backend
-from tensorflow.keras.models import load_model,Model
-from tensorflow.keras.callbacks import TensorBoard,EarlyStopping, ModelCheckpoint
+from keras.layers import Dense, Input, LSTM, Dropout, Bidirectional, Dot, GRU, Conv1D, MaxPooling1D, Flatten, Subtract
+from keras.layers.normalization import BatchNormalization
+from keras.layers.embeddings import Embedding
+from keras.layers.merge import concatenate, dot, subtract
+from keras.optimizers import Adam
+from keras import backend
+from keras.models import load_model,Model
+from keras.callbacks import TensorBoard,EarlyStopping, ModelCheckpoint
 import time,os
 
-class SiameneLSTM_classify:
+class SiameneLSTM:
     def __init__(self, embedding_dim, max_sequence_length, number_lstm, number_dense, rate_drop_lstm,\
                  rate_drop_dense, hidden_activation, validation_split_ratio):
         self.embedding_dim = embedding_dim
@@ -42,13 +45,14 @@ class SiameneLSTM_classify:
 
 
         # Creating LSTM Encoders
-        lstm_layer1 = Bidirectional(LSTM(150, kernel_initializer='random_uniform', bias_initializer='zeros', activation='sigmoid'))
-        lstm_layer2 = Bidirectional(LSTM(150, kernel_initializer='random_uniform', bias_initializer='zeros', activation='sigmoid'))
+        lstm_layer1 = Bidirectional(LSTM(100, kernel_initializer='random_uniform', bias_initializer='zeros', activation='sigmoid'))
+        lstm_layer2 = Bidirectional(LSTM(100, kernel_initializer='random_uniform', bias_initializer='zeros', activation='sigmoid'))
         
         # Setting LSTM Encoder layer for Second Sentence
         sequence_2_input = Input(shape=(self.max_sequence_length,), dtype='int32') # Input 1
         embedded_sequences_2 = embedding_layer(sequence_2_input)
         x2 = lstm_layer2(embedded_sequences_2)
+        x2 = Dropout(self.rate_drop_lstm)(x2)
         x2 = Dense(50, activation='sigmoid')(x2)
         
         # Setting LSTM Encoder layer for First Sentence
@@ -56,14 +60,15 @@ class SiameneLSTM_classify:
         embedded_sequences_1 = embedding_layer(sequence_1_input)
         x1 = Subtract()([embedded_sequences_1, embedded_sequences_2]) #dist = v1 - v2
         x1 = lstm_layer1(x1)
+        x1 = Dropout(self.rate_drop_lstm)(x1)
         x1 = Dense(50, activation='sigmoid')(x1)
         
         # Create feature engineering input
         feat_input = Input(shape=(5,)) # Input 3
-        feat_dense = Dense(125, activation = 'sigmoid')(feat_input)
-        feat_dense = Dense(125, activation = 'sigmoid')(feat_dense)
-        feat_dense = Dense(125, activation = 'sigmoid')(feat_dense)
-        feat_dense = Dense(125, activation = 'sigmoid')(feat_dense)
+        feat_dense = Dense(100, activation = 'sigmoid')(feat_input)
+        feat_dense = Dense(100, activation = 'sigmoid')(feat_dense)
+        feat_dense = Dense(100, activation = 'sigmoid')(feat_dense)
+        feat_dense = Dense(100, activation = 'sigmoid')(feat_dense)
         
         # Creating leaks input
         leaks_input = Input(shape=(leaks_train.shape[1],))  # Input 4
@@ -74,17 +79,17 @@ class SiameneLSTM_classify:
         # Merging two LSTM encodes vectors from sentences to
         # pass it to dense layer applying dropout and batch normalisation
         merged = concatenate([x1, x2, feat_dense, leaks_dense])
-        merged = Dense(125, activation='sigmoid')(merged)
-        merged = Dense(125, activation='sigmoid')(merged)
-        merged = Dense(125, activation='sigmoid')(merged)
+        merged = Dense(100, activation='sigmoid')(merged)
+        merged = Dense(100, activation='sigmoid')(merged)
+        merged = Dense(100, activation='sigmoid')(merged)
         merged = Dense(25, activation='sigmoid')(merged)
         merged = BatchNormalization()(merged)
         merged = Dropout(self.rate_drop_dense)(merged)
-        # preds = Dense(1, activation='linear')(merged)
-        preds = Dense(3, activation='softmax')(merged)
+        preds = Dense(1, activation='linear')(merged)
 
         model = Model(inputs=[sequence_2_input, sequence_1_input, feat_input, leaks_input], outputs=preds)
-        model.compile(loss='mae', optimizer='adagrad' , metrics=['mse', 'mae', 'acc'])
+        opt = keras.optimizers.Adagrad(lr=0.005)
+        model.compile(loss='mae', optimizer=opt , metrics=['mse', 'mae', 'acc'])
 
         STAMP = 'lstm_%d_%d_%.2f_%.2f' % (self.number_lstm_units, self.number_dense_units, self.rate_drop_lstm, self.rate_drop_dense)
 
@@ -101,7 +106,7 @@ class SiameneLSTM_classify:
 
         model.fit([train_data_x1, train_data_x2, feat_train, leaks_train], train_scores,
                validation_data=([val_data_x1, val_data_x2, feat_val, leaks_val], val_scores),
-              epochs=25, batch_size=128, shuffle=True,
+              epochs=60, batch_size=128, shuffle=True,
           callbacks=[model_checkpoint, tensorboard])
          
         preds = list(model.predict([train_data_x1, train_data_x2, feat_train, leaks_train], verbose=1).ravel()) #Only for cross check purposes,
