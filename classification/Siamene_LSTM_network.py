@@ -88,7 +88,7 @@ class SiameneLSTM:
         preds = Dense(3, activation='softmax')(merged)
 
         model = Model(inputs=[sequence_2_input, sequence_1_input, feat_input, leaks_input], outputs=preds)
-        opt = keras.optimizers.Adagrad(lr=0.005)
+        opt = keras.optimizers.Adagrad(lr=0.001)
         model.compile(loss='categorical_crossentropy', optimizer=opt , metrics=['acc'])
 
         STAMP = 'lstm_%d_%d_%.2f_%.2f' % (self.number_lstm_units, self.number_dense_units, self.rate_drop_lstm, self.rate_drop_dense)

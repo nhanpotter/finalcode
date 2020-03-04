@@ -7,11 +7,11 @@ from math import sqrt
 import pandas as pd
 import numpy as np
 #train model...
-# input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
-input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
+input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
+# input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
 
 df = NLP.cleaning_dataset(input_dataset)
-df = df.iloc[:2500, :]
+# df = df.iloc[:2500, :]
 
 X = df[['Ref Answer', 'Answer']]
 Y = pd.DataFrame(df['ans_grade'])
