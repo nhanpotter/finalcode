@@ -85,11 +85,11 @@ class SiameneLSTM:
         merged = Dense(25, activation='sigmoid')(merged)
         merged = BatchNormalization()(merged)
         merged = Dropout(self.rate_drop_dense)(merged)
-        preds = Dense(1, activation='linear')(merged)
+        preds = Dense(3, activation='softmax')(merged)
 
         model = Model(inputs=[sequence_2_input, sequence_1_input, feat_input, leaks_input], outputs=preds)
         opt = keras.optimizers.Adagrad(lr=0.005)
-        model.compile(loss='mae', optimizer=opt , metrics=['mse', 'mae', 'acc'])
+        model.compile(loss='categorical_crossentropy', optimizer=opt , metrics=['acc'])
 
         STAMP = 'lstm_%d_%d_%.2f_%.2f' % (self.number_lstm_units, self.number_dense_units, self.rate_drop_lstm, self.rate_drop_dense)
 
@@ -109,6 +109,6 @@ class SiameneLSTM:
               epochs=60, batch_size=128, shuffle=True,
           callbacks=[model_checkpoint, tensorboard])
          
-        preds = list(model.predict([train_data_x1, train_data_x2, feat_train, leaks_train], verbose=1).ravel()) #Only for cross check purposes,
+        preds = list(model.predict([train_data_x1, train_data_x2, feat_train, leaks_train], verbose=1)) #Only for cross check purposes,
                                                                                                                 #not used for actual testing
         return preds, bst_model_path

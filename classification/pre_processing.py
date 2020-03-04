@@ -164,8 +164,8 @@ def word_embed_meta_data(documents, embedding_dim):
     vocabulary_size = 20000
     tokenizer = Tokenizer(num_words= vocabulary_size, filters='')
     tokenizer.fit_on_texts(documents)
-    gloveFile = "/home/mvanessa/pastprojects/glove.6B.300d.txt"
-    # gloveFile = "/Users/michellevanessa/Desktop/automatic-text-scoring-master/glove.6B.300d.txt"
+    # gloveFile = "/home/mvanessa/pastprojects/glove.6B.300d.txt"
+    gloveFile = "/Users/michellevanessa/Desktop/automatic-text-scoring-master/glove.6B.300d.txt"
     model = train_word2vec(gloveFile)
     
     ## Handling the exception cases where the word in dataset is not present in the GloVe embeddings vocabulary

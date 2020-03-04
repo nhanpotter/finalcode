@@ -14,13 +14,13 @@ NUMBER_LSTM = 500
 NUMBER_DENSE_UNITS = 50
 ACTIVATION_FUNCTION = 'sigmoid'
 
-def train_dataset_model(df):
+def train_dataset_model(df, y_train):
     df['Ref Answer'] = df['Ref Answer'].astype(str)
     df['Answer'] = df['Answer'].astype(str)
     
     answer1 = df['Ref Answer'].tolist()
     answer2 = df['Answer'].tolist()
-    scores = df['ans_grade'].tolist()
+    scores = y_train.tolist()
     
     ## creating answers pairs
     answers_pair = [(x1, x2) for x1, x2 in zip(answer1, answer2)]
@@ -44,7 +44,7 @@ def train_dataset_model(df):
     print("----------model trained-----------")
     return preds, model, tokenizer
 
-def test_dataset_model(df_test,model, tokenizer):
+def test_dataset_model(df_test, model, tokenizer):
     
     df_test['Ref Answer'] = df_test['Ref Answer'].astype(str)
     df_test['Answer'] = df_test['Answer'].astype(str)
@@ -63,7 +63,7 @@ def test_dataset_model(df_test,model, tokenizer):
     
     
     #predict the results
-    preds = list(model.predict([test_data_x1, test_data_x2, feat, leaks_test], verbose=1).ravel())
+    preds = list(model.predict([test_data_x1, test_data_x2, feat, leaks_test], verbose=1))
     print("----------predicted test results-----------")
     
     #mapping results with input test data...

@@ -1,16 +1,14 @@
 import NLP
 from sklearn.model_selection import train_test_split
 import model
-from scipy.stats import spearmanr
-from scipy.stats import pearsonr
-from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
 from sklearn.preprocessing import MinMaxScaler
 from math import sqrt
 import pandas as pd
 import numpy as np
 #train model...
-input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
-# input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
+# input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
+input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
 
 df = NLP.cleaning_dataset(input_dataset)
 df = df.iloc[:2500, :]
@@ -59,44 +57,37 @@ x = scaler_x5.transform(x)
 X['Unique Words Answer'] = x
 
 
-scaler_y = MinMaxScaler()
-scaler_y.fit(y)
-y = scaler_y.transform(y)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=101)
 
 df = X_train
-df['ans_grade'] = y_train
-
+#
 df_test = X_test
-df_test['ans_grade'] = y_test
 
 # Train the model
-test, train_model, tokenizer = model.train_dataset_model(df)
+test, train_model, tokenizer = model.train_dataset_model(df, y_train)
 
 #Obtain test results by training on the test dataset dataframe
-test_results = model.test_dataset_model(df_test,train_model, tokenizer)
+test_results = model.test_dataset_model(df_test, train_model, tokenizer)
 
 ## Processing of the test result to obtain a uniform format and then inverse transform
 y_true = y_test.tolist()
-y_true = scaler_y.inverse_transform(y_true)
+# y_true = scaler_y.inverse_transform(y_true)
 y_t = []
-for i in range(len(y_true)):
-    for x in y_true[i]:
-        y_t.append(x)
+for x in y_true:
+    if x[0] == 1:
+        y_t.append(0)
+    elif x[1] == 1:
+        y_t.append(1)
+    elif x[2] == 1:
+        y_t.append(2)
+    else:
+        y_t.append(None)
 y_true = y_t
 
 t = []
-for i in range(len(test_results)):
-    temp = []
-    temp.append(test_results[i])
-    t.append(temp)
-test_results = t
-test_results = pd.DataFrame(test_results)
-test_results = scaler_y.inverse_transform(test_results)
-t = []
-for i in range(len(test_results)):
-    for x in test_results[i]:
-        t.append(x)
+for x in test_results:
+    t.append(np.where(x == np.amax(x))[0][0])
+
 test_results = t
 
 
@@ -107,11 +98,7 @@ print(test_results)
 print('y_true')
 print(y_true)
 
-rho, p = spearmanr(test_results, y_true)
-pearson, pval = pearsonr(test_results, y_true)
-rms = sqrt(mean_squared_error(test_results, y_true))
-mae = mean_absolute_error(test_results, y_true)
-print("Spearman", rho)
-print("Pearson" , pearson)
-print("RMS", rms)
-print("MAE", mae)
+acc = accuracy_score(y_true, test_results)
+print("Accuracy", acc)
+print(confusion_matrix(y_true, test_results))
+print(classification_report(y_true, test_results, digits=4))
