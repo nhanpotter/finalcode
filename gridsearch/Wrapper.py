@@ -31,7 +31,6 @@ scaler_x2.fit(x)
 x = scaler_x2.transform(x)
 X['Len Ref By Ans'] = x
 
-x = pd.DataFrame(df['Words Answer'])
 scaler_x3 = MinMaxScaler()
 scaler_x3.fit(x)
 x = scaler_x3.transform(x)
@@ -60,49 +59,59 @@ df['ans_grade'] = y_train
 
 df_test = X_test
 df_test['ans_grade'] = y_test
+x = pd.DataFrame(df['Words Answer'])
 
-# Train the model
-test, train_model, tokenizer = model.train_dataset_model(df)
+# ======
+batch_size = 128
+lr = 0.005
+no_dense = 100
+no_lstm = 100
+drop_lstm = 0.2
+drop_dense = 0.5
+reg_lstm =  0.7
+reg_dense = 0.1
+arr = []
+pearson_arr = [None] * len(arr)
+rmse = [None] * len(arr)
+mae = [None] * len(arr)
 
-#Obtain test results by training on the test dataset dataframe
-test_results = model.test_dataset_model(df_test,train_model, tokenizer)
+df, answers_pair, feat, scores, embedding_meta_data, tokenizer = model.initializer(df)
 
-## Processing of the test result to obtain a uniform format and then inverse transform
-y_true = y_test.tolist()
-y_true = scaler_y.inverse_transform(y_true)
-y_t = []
-for i in range(len(y_true)):
-    for x in y_true[i]:
-        y_t.append(x)
-y_true = y_t
+for index in range(len(arr)):
+    test, train_model, tokenizer = model.train_dataset_model(batch_size, lr, no_dense, no_lstm, drop_lstm, drop_dense, reg_lstm, reg_dense, answers_pair, feat, scores, embedding_meta_data, tokenizer)
+    test_results = model.test_dataset_model(df_test,train_model, tokenizer)
 
-t = []
-for i in range(len(test_results)):
-    temp = []
-    temp.append(test_results[i])
-    t.append(temp)
-test_results = t
-test_results = pd.DataFrame(test_results)
-test_results = scaler_y.inverse_transform(test_results)
-t = []
-for i in range(len(test_results)):
-    for x in test_results[i]:
-        t.append(x)
-test_results = t
+    y_true = y_test.tolist()
+    y_true = scaler_y.inverse_transform(y_true)
+    y_t = []
+    for i in range(len(y_true)):
+        for x in y_true[i]:
+            y_t.append(x)
+    y_true = y_t
 
+    t = []
+    for i in range(len(test_results)):
+        temp = []
+        temp.append(test_results[i])
+        t.append(temp)
+    test_results = t
+    test_results = pd.DataFrame(test_results)
+    test_results = scaler_y.inverse_transform(test_results)
+    t = []
+    for i in range(len(test_results)):
+        for x in test_results[i]:
+            t.append(x)
+    test_results = t
 
-# ===== DONE =====
-## Evaluation metrics
-print('test results')
-print(test_results)
-print('y_true')
-print(y_true)
+    pearson, pval = pearsonr(test_results, y_true)
+    pearson_arr[index] = pearson
+    rmse[index] = sqrt(mean_squared_error(test_results, y_true))
+    mae[index] = mean_absolute_error(test_results, y_true)
 
-rho, p = spearmanr(test_results, y_true)
-pearson, pval = pearsonr(test_results, y_true)
-rms = sqrt(mean_squared_error(test_results, y_true))
-mae = mean_absolute_error(test_results, y_true)
-print("Spearman", rho)
-print("Pearson" , pearson)
-print("RMS", rms)
-print("MAE", mae)
+# =====
+print('========== RESULTS ==========')
+for index in range(len(arr)):
+    print('===== ' + str(arr[index]) + ' =====')
+    print('Pearson:', round(pearson_arr[index], 4))
+    print('RMSE:', round(rmse[index], 4))
+    print('MAE:', round(mae[index], 4))
