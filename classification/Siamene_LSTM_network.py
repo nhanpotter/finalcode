@@ -1,5 +1,5 @@
 import numpy as np
-import pre_processing
+import embedding
 import pandas as pd
 import tensorflow as tf
 import keras
@@ -31,7 +31,7 @@ class SiameneLSTM:
         tokenizer, embedding_matrix = embedding_meta_data['tokenizer'], embedding_meta_data['embedding_matrix']
 
         train_data_x1, train_data_x2, train_scores, leaks_train, feat_train,\
-        val_data_x1, val_data_x2, val_scores, leaks_val, feat_val = pre_processing.create_train_dev_set(tokenizer, sentences_pair,feat, scores, self.max_sequence_length, self.validation_split_ratio)
+        val_data_x1, val_data_x2, val_scores, leaks_val, feat_val = embedding.create_train_dev_set(tokenizer, sentences_pair, feat, scores, self.max_sequence_length, self.validation_split_ratio)
         
         if train_data_x1 is None:
             print("-----Failure: Unable to train model-----")

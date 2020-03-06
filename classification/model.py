@@ -1,7 +1,7 @@
 from keras.models import load_model
 import pandas as pd
-import Siamene_LSTM_network
-import pre_processing
+import lstm
+import embedding
 from operator import itemgetter
 
 #initialized required parameters for LSTM network...
@@ -30,12 +30,12 @@ def train_dataset_model(df, y_train):
     feat = pd.DataFrame(df[['Length Answer', 'Length Ref Answer', 'Len Ref By Ans', 'Words Answer', 'Unique Words Answer']])
     
     # creating word embedding meta data for word embedding 
-    tokenizer, embedding_matrix = pre_processing.word_embed_meta_data(answer1 + answer2,  EMBEDDING_DIM)
+    tokenizer, embedding_matrix = embedding.word_embed_meta_data(answer1 + answer2, EMBEDDING_DIM)
     embedding_meta_data = {'tokenizer': tokenizer,'embedding_matrix': embedding_matrix}
     print("----------created word embedding meta data-----------")
     
     #SiameneBiLSTM is a class for  Long short Term Memory networks
-    siamese = Siamene_LSTM_network.SiameneLSTM(EMBEDDING_DIM ,MAX_SEQUENCE_LENGTH, NUMBER_LSTM, NUMBER_DENSE_UNITS, RATE_DROP_LSTM, RATE_DROP_DENSE, ACTIVATION_FUNCTION, VALIDATION_SPLIT)
+    siamese = lstm.SiameneLSTM(EMBEDDING_DIM, MAX_SEQUENCE_LENGTH, NUMBER_LSTM, NUMBER_DENSE_UNITS, RATE_DROP_LSTM, RATE_DROP_DENSE, ACTIVATION_FUNCTION, VALIDATION_SPLIT)
     preds, model_path = siamese.train_model(answers_pair, feat, scores, embedding_meta_data, model_save_directory='./')
     #preds, model_path = siamese.train_model(answers_pair, scores, embedding_meta_data, model_save_directory='./')
     
@@ -59,7 +59,7 @@ def test_dataset_model(df_test, model, tokenizer):
     ## features input
     feat = pd.DataFrame(df_test[['Length Answer', 'Length Ref Answer', 'Len Ref By Ans', 'Words Answer', 'Unique Words Answer']])
     
-    test_data_x1, test_data_x2, feat, leaks_test = pre_processing.create_test_data(tokenizer,answers_test_pair, feat, MAX_SEQUENCE_LENGTH)
+    test_data_x1, test_data_x2, feat, leaks_test = embedding.create_test_data(tokenizer, answers_test_pair, feat, MAX_SEQUENCE_LENGTH)
     
     
     #predict the results

@@ -1,4 +1,4 @@
-import NLP
+import preprocess
 from sklearn.model_selection import train_test_split
 import model
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
@@ -10,7 +10,7 @@ import numpy as np
 input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
 # input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
 
-df = NLP.cleaning_dataset(input_dataset)
+df = preprocess.cleaning_dataset(input_dataset)
 # df = df.iloc[:2500, :]
 
 X = df[['Ref Answer', 'Answer']]
