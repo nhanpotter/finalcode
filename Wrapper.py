@@ -13,7 +13,7 @@ input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
 # input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
 
 df = NLP.cleaning_dataset(input_dataset)
-df = df.iloc[:2500, :]
+# df = df.iloc[:2500, :]
 
 X = df[['Ref Answer', 'Answer']]
 y = pd.DataFrame(df['ans_grade'])
@@ -98,11 +98,9 @@ print(test_results)
 print('y_true')
 print(y_true)
 
-rho, p = spearmanr(test_results, y_true)
 pearson, pval = pearsonr(test_results, y_true)
 rms = sqrt(mean_squared_error(test_results, y_true))
 mae = mean_absolute_error(test_results, y_true)
-print("Spearman", rho)
-print("Pearson" , pearson)
-print("RMS", rms)
-print("MAE", mae)
+print("Pearson" , round(pearson, 4))
+print("RMS", round(rms, 4))
+print("MAE", round(mae, 4))
