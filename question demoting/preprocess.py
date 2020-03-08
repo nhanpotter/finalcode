@@ -96,20 +96,20 @@ def question_demoting(df, file):
     for index, row in df.iterrows():
         qn = questions.loc[questions['Q_ID'] == row['Q_ID']]
         demoted = row['Answer']
-        qn = qn['Question'][0]
+        qn = qn['Question'].values.tolist()[0]
         for x in qn:
             demoted = demoted.replace(x, '')
             demoted = demoted.replace('  ', ' ')
-            if len(row['Answer']) != len(demoted):
-                df.at[index, 'Answer'] = demoted
-                length = len(demoted)
-                df.at[index, 'Length Answer'] = length
-                df.at[index, 'Len Ref By Ans'] = row['Length Ref Answer'] / length
-                words = len(demoted.split())
-                df.at[index, 'Words Answer'] = words
-                df.at[index, 'Words Ref By Ans'] = row['Words Ref Answer'] / words
-                unique = uniquecount(demoted)
-                df.at[index, 'Unique Words Answer'] = unique
-                df.at[index, 'Unique Words Ref/Unique Words Answer'] = row['Unique Words Ref Answer'] / unique
-                df.at[index, 'Unique / Words Answer'] = unique / words
+        if len(row['Answer']) != len(demoted):
+            df.at[index, 'Answer'] = demoted
+            length = len(demoted)
+            df.at[index, 'Length Answer'] = length
+            df.at[index, 'Len Ref By Ans'] = row['Length Ref Answer'] / length
+            words = len(demoted.split())
+            df.at[index, 'Words Answer'] = words
+            df.at[index, 'Words Ref By Ans'] = row['Words Ref Answer'] / words
+            unique = uniquecount(demoted)
+            df.at[index, 'Unique Words Answer'] = unique
+            df.at[index, 'Unique Words Ref/Unique Words Answer'] = row['Unique Words Ref Answer'] / unique
+            df.at[index, 'Unique / Words Answer'] = unique / words
     return df
