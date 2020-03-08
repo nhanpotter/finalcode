@@ -23,7 +23,7 @@ X, y, scaler_y = preprocess.scale(df)
 
 X_train, X_test, y_train, y_test = preprocess.split(X, y, 0.2)
 
-split = 2
+split = 5
 index = 0
 train_model = [None] * split
 tokenizer = [None] * split
