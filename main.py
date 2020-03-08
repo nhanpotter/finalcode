@@ -1,5 +1,5 @@
-import preprocess
 import model
+import preprocess
 
 # input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
 input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'

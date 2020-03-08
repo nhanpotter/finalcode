@@ -1,11 +1,12 @@
+from math import sqrt
+
 import pandas as pd
 from keras.models import load_model
 from scipy.stats import pearsonr
 from sklearn.metrics import mean_squared_error, mean_absolute_error
-from math import sqrt
 
-import lstm
 import embedding
+import lstm
 
 # initialized required parameters for LSTM network...
 EMBEDDING_DIM = 300

@@ -1,12 +1,14 @@
-import preprocess
-from sklearn.model_selection import train_test_split
-import model
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
-from sklearn.preprocessing import MinMaxScaler
-from math import sqrt
-import pandas as pd
 import numpy as np
-#train model...
+import pandas as pd
+from sklearn.metrics import accuracy_score, confusion_matrix, \
+    classification_report
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+
+import model
+import preprocess
+
+# train model...
 input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
 # input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
 
@@ -56,7 +58,6 @@ scaler_x5.fit(x)
 x = scaler_x5.transform(x)
 X['Unique Words Answer'] = x
 
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=101)
 
 df = X_train
@@ -66,7 +67,7 @@ df_test = X_test
 # Train the model
 test, train_model, tokenizer = model.train_dataset_model(df, y_train)
 
-#Obtain test results by training on the test dataset dataframe
+# Obtain test results by training on the test dataset dataframe
 test_results = model.test_dataset_model(df_test, train_model, tokenizer)
 
 ## Processing of the test result to obtain a uniform format and then inverse transform
@@ -89,7 +90,6 @@ for x in test_results:
     t.append(np.where(x == np.amax(x))[0][0])
 
 test_results = t
-
 
 # ===== DONE =====
 ## Evaluation metrics

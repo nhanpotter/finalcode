@@ -1,7 +1,9 @@
-import preprocess
-import model
-import embedding
 from sklearn.model_selection import KFold
+
+import embedding
+import model
+import preprocess
+
 
 def avg(rms, mae):
     return (rms + mae) / 2
@@ -13,13 +15,13 @@ embedmodel = embedding.train_word2vec('/home/mvanessa/pastprojects/glove.6B.300d
 # embedmodel = embedding.train_word2vec('/Users/michellevanessa/Desktop/automatic-text-scoring-master/glove.6B.300d.txt')
 
 df = preprocess.cleaning_dataset(input_dataset)
-df = df.iloc[:2500, :]
+# df = df.iloc[:2500, :]
 
 X, y, scaler_y = preprocess.scale(df)
 
 X_train, X_test, y_train, y_test = preprocess.split(X, y, 0.2)
 
-split = 10
+split = 5
 index = 0
 train_model = [None] * split
 tokenizer = [None] * split

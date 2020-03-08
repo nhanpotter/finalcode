@@ -1,4 +1,3 @@
-import embedding
 import os
 import time
 
@@ -98,7 +97,7 @@ class SiameneLSTM:
         model.compile(loss='mae', optimizer=opt, metrics=['mse', 'mae', 'acc'])
 
         STAMP = 'lstm_%d_%d_%.2f_%.2f' % (
-        self.number_lstm_units, self.number_dense_units, self.rate_drop_lstm, self.rate_drop_dense)
+            self.number_lstm_units, self.number_dense_units, self.rate_drop_lstm, self.rate_drop_dense)
 
         checkpoint_dir = model_save_directory + 'checkpoints/' + str(int(time.time())) + '/'
 
