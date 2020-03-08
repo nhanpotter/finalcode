@@ -4,3 +4,4 @@ classification/ctg_data_cleaned.csv
 checkpoints/
 classification/checkpoints/
 kfold/checkpoints/
+question demoting/checkpoints/
