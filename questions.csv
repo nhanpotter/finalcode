@@ -25,7 +25,7 @@
 4.3,How are arrays passed to functions
 4.4,"What is the difference between an array declared as static, and one that is not"
 4.5,How many dimensions need to be specified when passing a multi-dimensional array as an argument to a function
-4.6,Using an index outside the bounds of the array generates an error. Is this a compilation error or a run-time error
+4.6,Using an index outside the bounds of the array generates an error.
 4.7,"How are bi-dimensional arrays stored in memory, by rows or by columns"
 5.1,"In one sentence, what is the main idea implemented by insertion sort"
 5.2,"In one sentence, what is the main idea implemented by selection sort"
@@ -58,7 +58,7 @@
 9.4,How can you implement a queue with a list
 9.5,"Which implementation (array-based vs. list-based) is preferred for a queue, and why"
 9.6,What is the stack operation corresponding to the enqueue operation in queues
-9.7,"What data structure is more appropriate for scheduling printing jobs at a printer, a stack or a queue"
+9.7,"What data structure is more appropriate for scheduling printing jobs at a printer"
 10.1,What is a tree
 10.2,What is the height of a tree
 10.3,What is a leaf
@@ -75,7 +75,7 @@
 11.7,What is the difference between an array that is declared as static and one that is not
 11.8,What is the main difference between a string of characters that is read into a variable of type string versus a variable of type char[]
 11.9,Briefly describe the divide-and-conquer paradigm.
-11.1,Briefly describe in one sentence how does merge sort work
+11.11,Briefly describe in one sentence how does merge sort work
 12.1,What is a pointer
 12.2,What is the experimental approach for measuring the running time of an algorithm
 12.3,Order the following functions by their running time: n^2; log(log n) ; 2^(log n) ; n! ; n^3.
@@ -85,4 +85,4 @@
 12.7,What are the main operations associated with a stack
 12.8,What is the Euler tour traversal of a tree
 12.9,How do you delete a node from a binary search tree
-12.1,How many steps does it take to search a node in a binary search tree
+12.11,How many steps does it take to search a node in a binary search tree

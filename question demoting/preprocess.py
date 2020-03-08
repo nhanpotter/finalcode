@@ -95,21 +95,32 @@ def question_demoting(df, file):
     questions = get_questions(file)
     for index, row in df.iterrows():
         qn = questions.loc[questions['Q_ID'] == row['Q_ID']]
-        demoted = row['Answer']
+        ans = row['Answer']
+        ref = row['Ref Answer']
+        demoted_ans = row['Answer'].split(' ')
+        demoted_ref = row['Ref Answer'].split(' ')
         qn = qn['Question'].values.tolist()[0]
         for x in qn:
-            demoted = demoted.replace(x, '')
-            demoted = demoted.replace('  ', ' ')
-        if len(row['Answer']) != len(demoted):
-            df.at[index, 'Answer'] = demoted
-            length = len(demoted)
+            if x in demoted_ans:
+                demoted_ans.remove(x)
+                if len(demoted_ans) == 0:
+                    demoted_ans.append('null')
+            if x in demoted_ref:
+                demoted_ref.remove(x)
+        demoted_ans = ' '.join(demoted_ans)
+        demoted_ref = ' '.join(demoted_ref)
+        if len(row['Answer']) != len(demoted_ans):
+            df.at[index, 'Answer'] = demoted_ans
+            length = len(demoted_ans)
             df.at[index, 'Length Answer'] = length
             df.at[index, 'Len Ref By Ans'] = row['Length Ref Answer'] / length
-            words = len(demoted.split())
+            words = len(demoted_ans.split())
             df.at[index, 'Words Answer'] = words
-            df.at[index, 'Words Ref By Ans'] = row['Words Ref Answer'] / words
-            unique = uniquecount(demoted)
+            unique = uniquecount(demoted_ans)
             df.at[index, 'Unique Words Answer'] = unique
-            df.at[index, 'Unique Words Ref/Unique Words Answer'] = row['Unique Words Ref Answer'] / unique
-            df.at[index, 'Unique / Words Answer'] = unique / words
+        if len(row['Ref Answer']) != len(demoted_ref):
+            df.at[index, 'Ref Answer'] = demoted_ref
+            length = len(demoted_ref)
+            df.at[index, 'Length Ref Answer'] = length
+            df.at[index, 'Len Ref By Ans'] = length / row['Length Answer']
     return df
