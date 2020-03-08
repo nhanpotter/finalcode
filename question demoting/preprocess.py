@@ -96,7 +96,7 @@ def question_demoting(df, file):
     for index, row in df.iterrows():
         qn = questions.loc[questions['Q_ID'] == row['Q_ID']]
         demoted = row['Answer']
-        qn = qn['Question'][0]
+        qn = qn['Question'].values.tolist()
         for x in qn:
             demoted = demoted.replace(x, '')
             demoted = demoted.replace('  ', ' ')
