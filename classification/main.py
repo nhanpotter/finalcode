@@ -3,12 +3,12 @@ import model
 import preprocess
 from sklearn.model_selection import KFold
 
-# input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
-input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
-# embedmodel = embedding.train_word2vec('/home/mvanessa/pastprojects/glove.6B.300d.txt')
-embedmodel = embedding.train_word2vec('/Users/michellevanessa/Desktop/automatic-text-scoring-master/glove.6B.300d.txt')
-# question = '/home/mvanessa/pastprojects/finalcode/questions.csv'
-question = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/questions.csv'
+input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
+# input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
+embedmodel = embedding.train_word2vec('/home/mvanessa/pastprojects/glove.6B.300d.txt')
+# embedmodel = embedding.train_word2vec('/Users/michellevanessa/Desktop/automatic-text-scoring-master/glove.6B.300d.txt')
+question = '/home/mvanessa/pastprojects/finalcode/questions.csv'
+# question = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/questions.csv'
 
 df = preprocess.cleaning_dataset(input_dataset)
 df = preprocess.question_demoting(df, question)
@@ -39,10 +39,8 @@ for i in range(1, split):
 
 test_results = model.predict(X_test, train_model[index], tokenizer[index])
 test_results, y_true = model.processresult(test_results, y_test)
-acc, cm, report = model.evaluate(test_results, y_true)
+acc, report = model.evaluate(test_results, y_true)
 
 print('Accuracy', acc)
-print('Confusion matrix:')
-print(cm)
 print('Classification report:')
 print(report)

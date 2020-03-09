@@ -63,7 +63,7 @@ def split(X, y, split):
 
 def cleaning_dataset(input_file):
     df_train = pd.read_csv(input_file, encoding='unicode escape')  # TODO: Try change to utf
-    # df_train = df_train.iloc[:2500, :]
+    # df_train = df_train.iloc[:10, :]
 
     # Pre-Processing...
     # convert all answers to string format...

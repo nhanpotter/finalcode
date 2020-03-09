@@ -9,6 +9,7 @@ from keras.layers.embeddings import Embedding
 from keras.layers.merge import concatenate
 from keras.layers.normalization import BatchNormalization
 from keras.models import Model
+from keras.regularizers import l2
 
 
 class SiameneLSTM:

@@ -9,6 +9,7 @@ from keras.layers.embeddings import Embedding
 from keras.layers.merge import concatenate
 from keras.layers.normalization import BatchNormalization
 from keras.models import Model
+from keras.regularizers import l2
 
 
 class SiameneLSTM:
@@ -46,10 +47,10 @@ class SiameneLSTM:
         # Creating LSTM Encoders
         # lstm_layer1 = Bidirectional(
         #     LSTM(150, kernel_initializer='random_uniform', bias_initializer='zeros', activation='sigmoid',
-        #          kernel_regularizer=l2(0.01), recurrent_regularizer=l2(0.01), bias_regularizer=l2(0.01)))
+        #          kernel_regularizer=l2(0.001), recurrent_regularizer=l2(0.001), bias_regularizer=l2(0.001)))
         # lstm_layer2 = Bidirectional(
         #     LSTM(150, kernel_initializer='random_uniform', bias_initializer='zeros', activation='sigmoid',
-        #          kernel_regularizer=l2(0.01), recurrent_regularizer=l2(0.01), bias_regularizer=l2(0.01)))
+        #          kernel_regularizer=l2(0.001), recurrent_regularizer=l2(0.001), bias_regularizer=l2(0.001)))
         lstm_layer1 = Bidirectional(
             LSTM(150, kernel_initializer='random_uniform', bias_initializer='zeros', activation='sigmoid'))
         lstm_layer2 = Bidirectional(
@@ -59,7 +60,7 @@ class SiameneLSTM:
         sequence_2_input = Input(shape=(self.max_sequence_length,), dtype='int32')  # Input 1
         embedded_sequences_2 = embedding_layer(sequence_2_input)
         x2 = lstm_layer2(embedded_sequences_2)
-        # x2 = Dropout(0.1)(x2)
+        # x2 = Dropout(0.4)(x2)
         x2 = Dense(50, activation='sigmoid')(x2)
 
         # Setting LSTM Encoder layer for First Sentence
@@ -67,17 +68,17 @@ class SiameneLSTM:
         embedded_sequences_1 = embedding_layer(sequence_1_input)
         x1 = Subtract()([embedded_sequences_1, embedded_sequences_2])  # dist = v1 - v2
         x1 = lstm_layer1(x1)
-        # x1 = Dropout(0.1)(x1)
+        # x1 = Dropout(0.4)(x1)
         x1 = Dense(50, activation='sigmoid')(x1)
 
         # Create feature engineering input
         feat_input = Input(shape=(5,))  # Input 3
         feat_dense = Dense(125, activation='sigmoid')(feat_input)
         feat_dense = Dense(125, activation='sigmoid')(feat_dense)
-        # feat_dense = Dense(125, activation='sigmoid')(feat_dense)
-        # feat_dense = Dense(125, activation='sigmoid')(feat_dense)
         feat_dense = Dense(125, activation='sigmoid')(feat_dense)
         feat_dense = Dense(125, activation='sigmoid')(feat_dense)
+        # feat_dense = Dense(125, activation='sigmoid', kernel_regularizer=l2(0.01), bias_regularizer=l2(0.01))(feat_dense)
+        # feat_dense = Dense(125, activation='sigmoid', kernel_regularizer=l2(0.01), bias_regularizer=l2(0.01))(feat_dense)
 
         # Creating leaks input
         leaks_input = Input(shape=(leaks_train.shape[1],))  # Input 4
@@ -91,8 +92,8 @@ class SiameneLSTM:
         merged = Dense(125, activation='sigmoid')(merged)
         merged = Dense(125, activation='sigmoid')(merged)
         merged = Dense(125, activation='sigmoid')(merged)
-        # merged = Dense(125, activation='sigmoid', kernel_regularizer=l2(0.1), bias_regularizer=l2(0.1))(merged)
-        # merged = Dense(125, activation='sigmoid', kernel_regularizer=l2(0.1), bias_regularizer=l2(0.1))(merged)
+        # merged = Dense(125, activation='sigmoid', kernel_regularizer=l2(0.01), bias_regularizer=l2(0.01))(merged)
+        # merged = Dense(125, activation='sigmoid', kernel_regularizer=l2(0.01), bias_regularizer=l2(0.01))(merged)
         merged = Dense(25, activation='sigmoid')(merged)
         merged = BatchNormalization()(merged)
         merged = Dropout(0.5)(merged)
@@ -100,7 +101,7 @@ class SiameneLSTM:
 
         model = Model(inputs=[sequence_2_input, sequence_1_input, feat_input, leaks_input], outputs=preds)
         opt = keras.optimizers.Adagrad(lr=0.01)
-        model.compile(loss='mae', optimizer=opt, metrics=['mse', 'mae', 'acc'])
+        model.compile(loss='acc', optimizer=opt, metrics=['acc'])
 
         STAMP = 'lstm_%d_%d_%.2f_%.2f' % (
             self.number_lstm_units, self.number_dense_units, self.rate_drop_lstm, self.rate_drop_dense)
