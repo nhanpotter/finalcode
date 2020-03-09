@@ -1,8 +1,7 @@
-from sklearn.model_selection import KFold
-
 import embedding
 import model
 import preprocess
+from sklearn.model_selection import KFold
 
 
 def avg(rms, mae):

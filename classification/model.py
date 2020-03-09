@@ -1,11 +1,10 @@
+import embedding
+import lstm
 import numpy as np
 import pandas as pd
 from keras.models import load_model
 from sklearn.metrics import accuracy_score, confusion_matrix, \
     classification_report
-
-import embedding
-import lstm
 
 # initialized required parameters for LSTM network...
 EMBEDDING_DIM = 300

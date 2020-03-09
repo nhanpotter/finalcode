@@ -1,6 +1,7 @@
 import os
 import time
 
+import embedding
 import keras
 from keras.callbacks import TensorBoard, ModelCheckpoint
 from keras.layers import Dense, Input, LSTM, Dropout, Bidirectional, Subtract
@@ -8,9 +9,6 @@ from keras.layers.embeddings import Embedding
 from keras.layers.merge import concatenate
 from keras.layers.normalization import BatchNormalization
 from keras.models import Model
-from keras.regularizers import l2
-
-import embedding
 
 
 class SiameneLSTM:
