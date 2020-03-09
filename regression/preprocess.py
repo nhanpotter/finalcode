@@ -44,7 +44,6 @@ def scale(df):
     scaler_y = MinMaxScaler()
     scaler_y.fit(y)
     y = scaler_y.transform(y)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=101)
 
     return X, y, scaler_y
 
