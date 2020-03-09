@@ -27,7 +27,7 @@ for train, test in kfold.split(X_train, y_train):
     train_model[index], tokenizer[index] = model.train(X_train.iloc[train], y_train[train], embedmodel)
     test_results = model.predict(X_train.iloc[test], train_model[index], tokenizer[index])
     test_results, y_true = model.processresult(test_results, y_train[test])
-    acc[index], _, _ = model.evaluate(test_results, y_true)
+    acc[index], _ = model.evaluate(test_results, y_true)
     index += 1
 
 index = 0
