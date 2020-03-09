@@ -107,7 +107,6 @@ def evaluate(test_results, y_true):
     print(y_true)
 
     acc = accuracy_score(y_true, test_results)
-    cm = confusion_matrix(y_true, test_results)
     report = classification_report(y_true, test_results, digits=4)
 
-    return acc, cm, report
+    return acc, report
