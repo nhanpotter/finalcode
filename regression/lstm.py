@@ -1,6 +1,7 @@
 import os
 import time
 
+import embedding
 import keras
 from keras.callbacks import TensorBoard, ModelCheckpoint
 from keras.layers import Dense, Input, LSTM, Dropout, Bidirectional, Subtract
@@ -8,9 +9,6 @@ from keras.layers.embeddings import Embedding
 from keras.layers.merge import concatenate
 from keras.layers.normalization import BatchNormalization
 from keras.models import Model
-from keras.regularizers import l2
-
-import embedding
 
 
 class SiameneLSTM:
@@ -52,6 +50,10 @@ class SiameneLSTM:
         lstm_layer2 = Bidirectional(
             LSTM(150, kernel_initializer='random_uniform', bias_initializer='zeros', activation='sigmoid',
                  kernel_regularizer=l2(0.001), recurrent_regularizer=l2(0.001), bias_regularizer=l2(0.001)))
+        # lstm_layer1 = Bidirectional(
+        #     LSTM(150, kernel_initializer='random_uniform', bias_initializer='zeros', activation='sigmoid'))
+        # lstm_layer2 = Bidirectional(
+        #     LSTM(150, kernel_initializer='random_uniform', bias_initializer='zeros', activation='sigmoid'))
 
         # Setting LSTM Encoder layer for Second Sentence
         sequence_2_input = Input(shape=(self.max_sequence_length,), dtype='int32')  # Input 1
@@ -74,6 +76,8 @@ class SiameneLSTM:
         feat_input = Input(shape=(5,))  # Input 3
         feat_dense = Dense(125, activation='sigmoid')(feat_input)
         feat_dense = Dense(125, activation='sigmoid')(feat_dense)
+        # feat_dense = Dense(125, activation='sigmoid')(feat_dense)
+        # feat_dense = Dense(125, activation='sigmoid')(feat_dense)
         feat_dense = Dense(125, activation='sigmoid', kernel_regularizer=l2(0.01), bias_regularizer=l2(0.01))(feat_dense)
         feat_dense = Dense(125, activation='sigmoid', kernel_regularizer=l2(0.01), bias_regularizer=l2(0.01))(feat_dense)
 
@@ -87,6 +91,8 @@ class SiameneLSTM:
         # pass it to dense layer applying dropout and batch normalisation
         merged = concatenate([x1, x2, feat_dense, leaks_dense])
         merged = Dense(125, activation='sigmoid')(merged)
+        # merged = Dense(125, activation='sigmoid')(merged)
+        # merged = Dense(125, activation='sigmoid')(merged)
         merged = Dense(125, activation='sigmoid', kernel_regularizer=l2(0.01), bias_regularizer=l2(0.01))(merged)
         merged = Dense(125, activation='sigmoid', kernel_regularizer=l2(0.01), bias_regularizer=l2(0.01))(merged)
         merged = Dense(25, activation='sigmoid')(merged)

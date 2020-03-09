@@ -1,8 +1,7 @@
-from sklearn.model_selection import KFold
-
 import embedding
 import model
 import preprocess
+from sklearn.model_selection import KFold
 
 
 def avg(rms, mae):
@@ -13,9 +12,11 @@ input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
 # input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
 embedmodel = embedding.train_word2vec('/home/mvanessa/pastprojects/glove.6B.300d.txt')
 # embedmodel = embedding.train_word2vec('/Users/michellevanessa/Desktop/automatic-text-scoring-master/glove.6B.300d.txt')
+question = '/home/mvanessa/pastprojects/finalcode/questions.csv'
+# question = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/questions.csv'
 
 df = preprocess.cleaning_dataset(input_dataset)
-# df = df.iloc[:2500, :]
+df = preprocess.question_demoting(df, question)
 
 X, y, scaler_y = preprocess.scale(df)
 
