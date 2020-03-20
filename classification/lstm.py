@@ -97,7 +97,8 @@ class SiameneLSTM:
         merged = Dense(25, activation='sigmoid')(merged)
         merged = BatchNormalization()(merged)
         merged = Dropout(0.5)(merged)
-        preds = Dense(3, activation='softmax')(merged)
+        # preds = Dense(3, activation='softmax')(merged) # 3 classes
+        preds = Dense(5, activation='softmax')(merged) # 5 classes
 
         model = Model(inputs=[sequence_2_input, sequence_1_input, feat_input, leaks_input], outputs=preds)
         opt = keras.optimizers.Adagrad(lr=0.01)

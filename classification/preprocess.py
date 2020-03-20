@@ -12,13 +12,20 @@ def scale(df):
     Y = pd.DataFrame(df['ans_grade'])
 
     Y_np = Y.to_numpy()
-    y = np.zeros((Y_np.shape[0], 3))
+    # y = np.zeros((Y_np.shape[0], 3)) # 3 classes
+    y = np.zeros((Y_np.shape[0], 5)) # 5 classes
     for index, row in Y.iterrows():
-        val = 1
-        if row['ans_grade'] <= 1:
-            val = 0
-        elif row['ans_grade'] >= 4:
-            val = 2
+        # 3 classes
+        # val = 1
+        # if row['ans_grade'] <= 1:
+        #     val = 0
+        # elif row['ans_grade'] >= 4:
+        #     val = 2
+
+        # 5 classes
+        val = row['ans_grade']
+        val = int(round(val)) - 1
+
         y[index, val] = 1
 
     ## Min Max Scaling of the features used for feature engineering
