@@ -3,12 +3,13 @@ import model
 import preprocess
 from sklearn.model_selection import KFold
 
-input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
-# input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
-embedmodel = embedding.train_word2vec('/home/mvanessa/pastprojects/glove.6B.300d.txt')
-# embedmodel = embedding.train_word2vec('/Users/michellevanessa/Desktop/automatic-text-scoring-master/glove.6B.300d.txt')
-question = '/home/mvanessa/pastprojects/finalcode/questions.csv'
-# question = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/questions.csv'
+# input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
+input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
+# embedmodel = embedding.train_word2vec('/home/mvanessa/pastprojects/glove.6B.300d.txt')
+embedmodel = embedding.train_word2vec('/Users/michellevanessa/Desktop/automatic-text-scoring-master/glove.6B.300d.txt')
+# question = '/home/mvanessa/pastprojects/finalcode/questions.csv'
+question = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/questions.csv'
+
 
 df = preprocess.cleaning_dataset(input_dataset)
 df = preprocess.question_demoting(df, question)
@@ -17,7 +18,7 @@ X, y = preprocess.scale(df)
 
 X_train, X_test, y_train, y_test = preprocess.split(X, y, 0.2)
 
-split = 5
+split = 2
 index = 0
 train_model = [None] * split
 tokenizer = [None] * split

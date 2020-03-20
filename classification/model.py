@@ -88,6 +88,10 @@ def processresult(test_results, y_test):
             y_t.append(1)
         elif x[2] == 1:
             y_t.append(2)
+        elif x[3] == 1:
+            y_t.append(3)
+        elif x[4] == 1:
+            y_t.append(4)
         else:
             y_t.append(None)
     y_true = y_t
