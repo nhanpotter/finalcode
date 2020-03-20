@@ -85,7 +85,7 @@ def cleaning_dataset(input_file):
     df_train['Ref Answer'] = df_train['Ref Answer'].apply(lambda x: " ".join(x for x in x.split() if x not in stop))
     df_train['Answer'] = df_train['Answer'].apply(lambda x: " ".join(x for x in x.split() if x not in stop))
 
-    return df_train.iloc[:10,:]
+    return df_train
 
 
 def get_questions(file):
