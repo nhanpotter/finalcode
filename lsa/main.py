@@ -5,7 +5,8 @@ import pandas as pd
 from scipy.stats import pearsonr
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 
-input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
+input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
+# input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
 
 df = pd.read_csv(input_dataset, encoding='utf-8')
 
