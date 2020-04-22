@@ -3,8 +3,7 @@ import lstm
 import numpy as np
 import pandas as pd
 from keras.models import load_model
-from sklearn.metrics import accuracy_score, confusion_matrix, \
-    classification_report
+from sklearn.metrics import accuracy_score, classification_report
 
 # initialized required parameters for LSTM network...
 EMBEDDING_DIM = 300
@@ -114,4 +113,15 @@ def evaluate(test_results, y_true):
     acc = accuracy_score(y_true, test_results)
     report = classification_report(y_true, test_results, digits=4)
 
+    result = report.split('\n')
+    index = findnth(result[7], '0.', 2)
+    f1 = float(result[7][index:(index + 6)])
+
     return acc, report
+
+
+def findnth(str, substring, n):
+    parts = str.split(substring, n + 1)
+    if len(parts) <= n + 1:
+        return -1
+    return len(str) - len(parts[-1]) - len(substring)
