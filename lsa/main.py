@@ -22,7 +22,7 @@ for x in range(len(ref)):
     predict.append(LSA.get_lsa_score(ref[x], ans[x]))
 
 y = df['ans_grade']
-result = pd.concat([y, pd.Series(predict)], axis=1, sort=False)
+result = pd.concat([y, pd.Series(predict).mul(5)], axis=1, sort=False)
 result = result.dropna()
 
 pearson, _ = pearsonr(result['ans_grade'], result[0])
