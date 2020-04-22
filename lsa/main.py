@@ -19,10 +19,10 @@ ans = LSA.append(ans)
 predict = []
 for x in range(len(ref)):
     print((x + 1) / (len(ref) + 1) * 100, '%')
-    predict.append(LSA.get_lsa_score(ref[x], ans[x]))
+    predict.append(LSA.get_lsa_score(ref[x], ans[x]) * 5)
 
 y = df['ans_grade']
-result = pd.concat([y, pd.Series(predict).mul(5)], axis=1, sort=False)
+result = pd.concat([y, pd.Series(predict)], axis=1, sort=False)
 result = result.dropna()
 
 pearson, _ = pearsonr(result['ans_grade'], result[0])
