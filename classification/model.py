@@ -113,10 +113,6 @@ def evaluate(test_results, y_true):
     acc = accuracy_score(y_true, test_results)
     report = classification_report(y_true, test_results, digits=4)
 
-    result = report.split('\n')
-    index = findnth(result[7], '0.', 2)
-    f1 = float(result[7][index:(index + 6)])
-
     return acc, report
 
 

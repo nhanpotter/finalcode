@@ -8,12 +8,9 @@ def avg(rms, mae):
     return (rms + mae) / 2
 
 
-input_dataset = '/home/mvanessa/pastprojects/finalcode/Augmented_Feat.csv'
-embedmodel = embedding.train_word2vec('/home/mvanessa/pastprojects/glove.6B.300d.txt')
-question = '/home/mvanessa/pastprojects/finalcode/questions.csv'
-# input_dataset = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/Augmented_Feat.csv'
-# embedmodel = embedding.train_word2vec('/Users/michellevanessa/Desktop/automatic-text-scoring-master/glove.6B.300d.txt')
-# question = '/Users/michellevanessa/Desktop/automatic-text-scoring-master/Final Code and Data/questions.csv'
+input_dataset = './Augmented_Feat.csv'
+embedmodel = embedding.train_word2vec('./glove.6B.300d.txt')
+question = './questions.csv'
 
 df = preprocess.cleaning_dataset(input_dataset)
 df = preprocess.question_demoting(df, question)

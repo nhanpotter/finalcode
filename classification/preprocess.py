@@ -12,19 +12,13 @@ def scale(df):
     Y = pd.DataFrame(df['ans_grade'])
 
     Y_np = Y.to_numpy()
-    # y = np.zeros((Y_np.shape[0], 3)) # 3 classes
-    y = np.zeros((Y_np.shape[0], 5)) # 5 classes
+    y = np.zeros((Y_np.shape[0], 3))
     for index, row in Y.iterrows():
-        # 3 classes
-        # val = 1
-        # if row['ans_grade'] <= 1:
-        #     val = 0
-        # elif row['ans_grade'] >= 4:
-        #     val = 2
-
-        # 5 classes
-        val = row['ans_grade']
-        val = int(round(val)) - 1
+        val = 1
+        if row['ans_grade'] <= 1:
+            val = 0
+        elif row['ans_grade'] >= 4:
+            val = 2
 
         y[index, val] = 1
 
@@ -70,7 +64,6 @@ def split(X, y, split):
 
 def cleaning_dataset(input_file):
     df_train = pd.read_csv(input_file, encoding='unicode escape')  # TODO: Try change to utf
-    # df_train = df_train.iloc[:10, :]
 
     # Pre-Processing...
     # convert all answers to string format...

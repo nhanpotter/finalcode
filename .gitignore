@@ -2,3 +2,8 @@ venv/
 checkpoints/
 classification/checkpoints/
 regression/checkpoints/
+glove.6B.300d.txt
+__pycache__/
+classification/__pycache__/
+lsa/__pycache__/
+regression/__pycache__/
